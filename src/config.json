@@ -1,5 +1,5 @@
 {
-    "mongoPath": "mongodb+srv://Username:Password@RestOfTheUrl/TicketBot",
+    "mongoPath": "",
     "name": "Ticket",
     "language": "javascript",
     "manager": "npm",
