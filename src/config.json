@@ -1,8 +1,8 @@
 {
-    "mongoPath": "mongodb+srv://TicketBot:RDs74YoKBLY34EApfnpJF8G6iHEnXMgTcBdh3M4t@main.hkwzs.mongodb.net/TicketBot",
+    "mongoPath": "mongodb+srv://Username:Password@RestOfTheUrl/TicketBot",
     "name": "Ticket",
     "language": "javascript",
     "manager": "npm",
-    "token": "Nzk5MjMxMjIyMzAzMjkzNDYx.YAAkFA.m38pGZ8m5d2rPLQwaUmDJ8B2dbc",
+    "token": "",
     "prefix": "!"
 }
