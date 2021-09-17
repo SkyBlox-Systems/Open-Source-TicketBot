@@ -19,6 +19,6 @@ module.exports = class TestCommand extends BaseCommand {
   }
 
   async run(client, message, args) {
-    message.channel.send('N/A')
+    message.channel.send('bot own by richard1234YT https://github.com/orgs/SkyBlox-Systems/people/richard1234YT https://github.com/SkyBlox-Systems')
   }
 }

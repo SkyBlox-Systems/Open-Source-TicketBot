@@ -10,7 +10,8 @@ module.exports = class ReadyEvent extends BaseEvent {
 			`${client.guilds.cache.size} servers!`,
 			`Shard #0`,
 			`${client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)} users!`,
-			`Version 2.1 Dev`
+			`Version 2.2 open sourced`,
+			`Own by richard1234YT`
 		];
 
 		let i = 0;
