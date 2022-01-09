@@ -1,30 +1,24 @@
 {
-  "name": "Ticket",
-  "version": "1.0.0",
-  "description": "",
+  "name": "@skybloxsystems/ticket-bot",
+  "version": "1.0.1",
+  "description": "Main",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./src/index.js",
-    "start": "node ./src/index.js",
-    "build": ""
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SkyBlox-Systems/Open-Source-TicketBot.git"
+  },
+  "keywords": [
+    "SkyBlox Systmes",
+    "Discord",
+    "Ticket"
+  ],
+  "author": "richard1234YT",
   "license": "ISC",
-  "dependencies": {
-    "axios": "^0.21.1",
-    "discord.js": "^12.5.1",
-    "discord.js-commando": "^0.10.0",
-    "discord.js-pagination": "^1.0.3",
-    "express": "^4.17.1",
-    "fs": "0.0.1-security",
-    "jsdom": "^16.4.0",
-    "moment": "^2.29.1",
-    "mongoose": "^5.11.12",
-    "ms": "^2.1.3",
-    "os": "^0.1.1"
+  "bugs": {
+    "url": "https://github.com/SkyBlox-Systems/Open-Source-TicketBot/issues"
   },
-  "devDependencies": {
-    "nodemon": "^2.0.7"
-  }
+  "homepage": "https://github.com/SkyBlox-Systems/Open-Source-TicketBot#readme"
 }

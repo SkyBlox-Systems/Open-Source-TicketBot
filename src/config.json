@@ -1,8 +1,0 @@
-{
-    "mongoPath": "",
-    "name": "Ticket",
-    "language": "javascript",
-    "manager": "npm",
-    "token": "",
-    "prefix": "!"
-}
