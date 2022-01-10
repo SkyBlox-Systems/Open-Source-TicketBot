@@ -22,6 +22,7 @@ if (Config.config.bot.prefix === '') {
   client.events = new Map();
   await registerCommands(client, '../commands');
   await registerEvents(client, '../events');
+  client.prefix = Config.config.bot.prefix
   await client.login(Config.config.bot.token);
   require('./dashboard/server')
   

@@ -9,6 +9,13 @@ Use the package manager [npm](https://www.npmjs.com/) to install foobar.
 ```bash
 npm i @skybloxsystems/ticket-bot
 ```
+## Update
+
+If you want to update the bot, please use the current version
+
+```bash
+npm i @skybloxsystems/ticket-bot@1.0.2
+```
 
 ## Usage
 

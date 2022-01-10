@@ -1,4 +1,5 @@
 const prefix = require("../schemas/TicketData");
+const MainConfig = require('../../../index')
 
 const getprefix = async (guildID) => {
   const result = await prefix.findOne({
@@ -8,7 +9,7 @@ const getprefix = async (guildID) => {
   if (result) {
     return result.BotPrefix;
   } else if (!result) {
-    return "!";
+    return MainConfig.config.BotPrefix;
   }
 };
 

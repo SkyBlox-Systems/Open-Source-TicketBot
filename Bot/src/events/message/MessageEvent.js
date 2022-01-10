@@ -54,6 +54,7 @@ module.exports = class MessageEvent extends BaseEvent {
     // }
     //   }
 
+    const ConfigBot = require('../../../../index')
 
     if (message.author.bot) return;
     if (message.content.startsWith(client.prefix)) {
