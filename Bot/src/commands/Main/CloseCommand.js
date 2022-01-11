@@ -13,7 +13,6 @@ const mongo = require('../../mongo');
 const ClaimTicket = require('../../schemas/ticketclaim')
 const MainDatabase = require('../../schemas/TicketData');
 const { mainModule } = require('process');
-const configmain = require('../../../../index')
 
 
 module.exports = class CloseCommand extends BaseCommand {
@@ -101,74 +100,74 @@ module.exports = class CloseCommand extends BaseCommand {
                   .setDescription(`Your ticket will be closed in 5 seconds`)
                   .setFooter(`Making a transcript....`)
   
-                async function Transcriptmain() {
-                  let messageCollection = new discord.Collection();
-                  let channelMessages = await message.channel.messages.fetch({
-                    limit: 100
-                  }).catch(err => console.log(err));
+                // async function Transcriptmain() {
+                //   let messageCollection = new discord.Collection();
+                //   let channelMessages = await message.channel.messages.fetch({
+                //     limit: 100
+                //   }).catch(err => console.log(err));
   
-                  messageCollection = messageCollection.concat(channelMessages);
+                //   messageCollection = messageCollection.concat(channelMessages);
   
-                  while (channelMessages.size === 100) {
-                    let lastMessageId = channelMessages.lastKey();
-                    channelMessages = await message.channel.messages.fetch({ limit: 100, before: lastMessageId }).catch(err => console.log(err));
-                    if (channelMessages)
-                      messageCollection = messageCollection.concat(channelMessages);
-                  }
-                  let msgs = messageCollection.array().reverse();
-                  let data = await fs.readFile('./src/dashboard/template.html', 'utf8').catch(err => console.log(err));
-                  if (data) {
-                    await fs.writeFile(`./src/dashboard/Tickets/${message.guild.id}/${generators}.html`, data).catch(err => console.log(err));
-                    let guildElement = document.createElement('div');
-                    let guildText = document.createTextNode(message.guild.name);
-                    let guildImg = document.createElement('img');
-                    guildImg.setAttribute('src', message.guild.iconURL());
-                    guildImg.setAttribute('width', '150');
-                    guildElement.appendChild(guildImg);
-                    guildElement.appendChild(guildText);
-                    console.log(guildElement.outerHTML);
-                    await fs.appendFile(`./src/dashboard/Tickets/${message.guild.id}/${generators}.html`, guildElement.outerHTML).catch(err => console.log(err));
+                //   while (channelMessages.size === 100) {
+                //     let lastMessageId = channelMessages.lastKey();
+                //     channelMessages = await message.channel.messages.fetch({ limit: 100, before: lastMessageId }).catch(err => console.log(err));
+                //     if (channelMessages)
+                //       messageCollection = messageCollection.concat(channelMessages);
+                //   }
+                //   let msgs = messageCollection.array().reverse();
+                //   let data = await fs.readFile('./src/dashboard/template.html', 'utf8').catch(err => console.log(err));
+                //   if (data) {
+                //     await fs.writeFile(`./src/dashboard/Tickets/${message.guild.id}/${generators}.html`, data).catch(err => console.log(err));
+                //     let guildElement = document.createElement('div');
+                //     let guildText = document.createTextNode(message.guild.name);
+                //     let guildImg = document.createElement('img');
+                //     guildImg.setAttribute('src', message.guild.iconURL());
+                //     guildImg.setAttribute('width', '150');
+                //     guildElement.appendChild(guildImg);
+                //     guildElement.appendChild(guildText);
+                //     console.log(guildElement.outerHTML);
+                //     await fs.appendFile(`./src/dashboard/Tickets/${message.guild.id}/${generators}.html`, guildElement.outerHTML).catch(err => console.log(err));
   
-                    msgs.forEach(async msg => {
-                      let parentContainer = document.createElement("div");
-                      parentContainer.className = "parent-container";
+                //     msgs.forEach(async msg => {
+                //       let parentContainer = document.createElement("div");
+                //       parentContainer.className = "parent-container";
   
-                      let avatarDiv = document.createElement("div");
-                      avatarDiv.className = "avatar-container";
-                      let img = document.createElement('img');
-                      img.setAttribute('src', msg.author.displayAvatarURL());
-                      img.className = "avatar";
-                      avatarDiv.appendChild(img);
+                //       let avatarDiv = document.createElement("div");
+                //       avatarDiv.className = "avatar-container";
+                //       let img = document.createElement('img');
+                //       img.setAttribute('src', msg.author.displayAvatarURL());
+                //       img.className = "avatar";
+                //       avatarDiv.appendChild(img);
   
-                      parentContainer.appendChild(avatarDiv);
+                //       parentContainer.appendChild(avatarDiv);
   
-                      let messageContainer = document.createElement('div');
-                      messageContainer.className = "message-container";
+                //       let messageContainer = document.createElement('div');
+                //       messageContainer.className = "message-container";
   
-                      let nameElement = document.createElement("span");
-                      let name = document.createTextNode(msg.author.tag + " " + msg.createdAt.toDateString() + " " + msg.createdAt.toLocaleTimeString() + " UTC");
-                      nameElement.appendChild(name);
-                      messageContainer.append(nameElement);
+                //       let nameElement = document.createElement("span");
+                //       let name = document.createTextNode(msg.author.tag + " " + msg.createdAt.toDateString() + " " + msg.createdAt.toLocaleTimeString() + " UTC");
+                //       nameElement.appendChild(name);
+                //       messageContainer.append(nameElement);
   
-                      if (msg.content.startsWith("```")) {
-                        let m = msg.content.replace(/```/g, "");
-                        let codeNode = document.createElement("code");
-                        let textNode = document.createTextNode(m);
-                        codeNode.appendChild(textNode);
-                        messageContainer.appendChild(codeNode);
-                      }
-                      else {
-                        let msgNode = document.createElement('span');
-                        let textNode = document.createTextNode(msg.content);
-                        msgNode.append(textNode);
-                        messageContainer.appendChild(msgNode);
-                      }
-                      parentContainer.appendChild(messageContainer);
+                //       if (msg.content.startsWith("```")) {
+                //         let m = msg.content.replace(/```/g, "");
+                //         let codeNode = document.createElement("code");
+                //         let textNode = document.createTextNode(m);
+                //         codeNode.appendChild(textNode);
+                //         messageContainer.appendChild(codeNode);
+                //       }
+                //       else {
+                //         let msgNode = document.createElement('span');
+                //         let textNode = document.createTextNode(msg.content);
+                //         msgNode.append(textNode);
+                //         messageContainer.appendChild(msgNode);
+                //       }
+                //       parentContainer.appendChild(messageContainer);
   
-                      await fs.appendFile(`./src/dashboard/Tickets/${message.guild.id}/${generators}.html`, parentContainer.outerHTML).catch(err => console.log(err));
-                    });
-                  }
-                }
+                //       await fs.appendFile(`./src/dashboard/Tickets/${message.guild.id}/${generators}.html`, parentContainer.outerHTML).catch(err => console.log(err));
+                //     });
+                //   }
+                // }
   
                 if (!message.channel.name.startsWith("ticket-")) return message.channel.send("This is not a valid ticket")
                 if (!message.member.hasPermission("MANAGE_CHANNELS")) return message.channel.send("You need MANAGE_CHANNELS permission to use this command")
@@ -179,14 +178,6 @@ module.exports = class CloseCommand extends BaseCommand {
                     errors: ['time']
                   }).then(() => {
                     message.channel.send(closing)
-                    fs.mkdir(`./src/dashboard/Tickets/${message.guild.id}`, function (err) {
-                      if (err) {
-                        console.log(err)
-                      } else {
-                        console.log("New directory successfully created.")
-                      }
-                    })
-                    Transcriptmain();
                     setTimeout(() => {
                       ClaimTicket.findOne({ ChannelID: message.channel.id }, async (err, data) => {
                         if (err) throw err;
@@ -242,12 +233,12 @@ module.exports = class CloseCommand extends BaseCommand {
                         const CloseEmbed = new MessageEmbed()
                           .setTitle('Transcript')
                           .setDescription(`Transcript for ${message.channel.name}`)
-                          .addField('Transcript', `[Click Me](${configmain.config.bot.dashboardurl}/Tickets/${message.guild.id}/${generators}.html)`)
+                          .addField('Transcript', `**DISABLED**`)
                           .addField('Reason', `${data.Reason}`)
                           .addField('Time', `${data.Time}`)
                           .addField('Claim User', `<@${data.ClaimUserID}>`)
                         TranscriptLogs.send(CloseEmbed)
-                        TranscriptLogs.send({ files: [`./src/dashboard/Tickets/${message.guild.id}/${generators}.html`] })
+                        TranscriptLogs.send('Transcript is disabled while we investigate the issue.')
                       })
   
                     }, 5000);
