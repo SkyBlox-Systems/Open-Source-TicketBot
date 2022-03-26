@@ -1,5 +1,6 @@
 const BaseCommand = require('../../utils/structures/BaseCommand');
 const {MessageEmbed} = require('discord.js');
+const Config = require('../../../../index')
 
 module.exports = class ServersCommand extends BaseCommand {
   constructor() {
@@ -7,7 +8,7 @@ module.exports = class ServersCommand extends BaseCommand {
   }
 
  async run(client, message, args) {
-  if (message.author.id !== '406164395643633665') {
+  if (message.author.id !== Config.config.bot.botClientId) {
     const NotOwner = new MessageEmbed()
       .setColor('RANDOM')
       .setTimestamp()

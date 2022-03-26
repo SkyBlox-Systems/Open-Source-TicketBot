@@ -1,5 +1,8 @@
 const { Shard } = require('discord.js');
 const BaseEvent = require('../../utils/structures/BaseEvent');
+const { BotVersions } = require('../../../slappey.json')
+const config = require('../../../../index')
+
 
 module.exports = class ReadyEvent extends BaseEvent {
   constructor() {
@@ -7,14 +10,11 @@ module.exports = class ReadyEvent extends BaseEvent {
   }
   async run (client) {
     const activities = [
-			`${client.guilds.cache.size} servers!`,
-			`Shard #0`,
-			`${client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)} users!`,
-			`Version 2.2 open sourced`,
-			`Own by richard1234YT`
+		`Version ${BotVersions}`,
+		`Bot is owned by SkyBlox Systems`
 		];
 
 		let i = 0;
-		setInterval(() => client.user.setActivity(`!setup | ${activities[i++ % activities.length]}`, { type: 'WATCHING' }), 15000);
+		setInterval(() => client.user.setActivity(`${config.config.bot.prefix}setup | ${activities[i++ % activities.length]}`, { type: 'WATCHING' }), 15000);
 	}
 }

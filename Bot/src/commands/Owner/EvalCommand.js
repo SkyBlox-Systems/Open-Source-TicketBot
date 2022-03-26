@@ -1,5 +1,6 @@
 const BaseCommand = require('../../utils/structures/BaseCommand');
 const { MessageEmbed } = require('discord.js')
+const Config = require('../../../../index')
 
 
 module.exports = class EvalCommand extends BaseCommand {
@@ -8,20 +9,20 @@ module.exports = class EvalCommand extends BaseCommand {
   }
 
   async run(client, message, args) {
-    if (message.author.id !== '406164395643633665') return message.channel.send('ABUSERS NO!');
+    if (message.author.id !== Config.config.bot.botClientId) return message.channel.send('ABUSERS NO!');
     const embed = new MessageEmbed()
         .setTitle('Evaluating...')
-    const msg = await message.channel.send(embed);
+    const msg = await message.channel.send({ embeds: [embed]});
     try {
         const data = eval(args.join(' ').replace(/```/g, ''));
         const embed = new MessageEmbed()
             .setTitle('Output: ')
             .setDescription(await data)
-        await msg.edit(embed)
+        await msg.edit({ embeds: [embed]})
         await msg.react('✅')
         await msg.react('❌')
-        const filter = (reaction, user) => (reaction.emoji.name === '❌' || reaction.emoji.name === '✅') && (user.id === message.author.id);
-        msg.awaitReactions(filter, { max: 1 })
+        const filters = (reaction, user) => (reaction.emoji.name === '❌' || reaction.emoji.name === '✅') && (user.id === message.author.id);
+        msg.awaitReactions({ filter: filters,  max: 1 })
             .then((collected) => {
                 collected.map((emoji) => {
                     switch (emoji._emoji.name) {
@@ -39,7 +40,7 @@ module.exports = class EvalCommand extends BaseCommand {
             .setTitle('An Error has occured')
         	.setDescription(e.toString());
         console.error(e)
-        return await msg.edit(embed);
+        return await msg.edit({ embeds: [embed]});
 
     }
   }

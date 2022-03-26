@@ -1,13 +1,20 @@
-const { registerCommands, registerEvents } = require('./utils/registry');
-const Config = require('../../index');
+const { Client, Intents, Interaction } = require('discord.js');
+const { registerCommands, registerEvents, registerSlashCommands } = require('./utils/registry');
+const config = require('../slappey.json');
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS, Intents.FLAGS.GUILD_INTEGRATIONS, Intents.FLAGS.GUILD_WEBHOOKS, Intents.FLAGS.GUILD_INVITES, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MESSAGE_TYPING, Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.DIRECT_MESSAGE_REACTIONS, Intents.FLAGS.DIRECT_MESSAGE_TYPING, Intents.FLAGS.GUILD_SCHEDULED_EVENTS ] });
+const DataBaseMongo = require('./mongo');
+// require('./slash-register')();
+// let commands = require('./slash-register').commands;
+// console.log(commands);
 const { MessageEmbed } = require('discord.js');
-const DatabaseMongo = require('./mongo');
+const { Permissions } = require('discord.js');
+
+const db = require('./schemas/commands')
 const MainDatabase = require('./schemas/TicketData')
-const getprefix = require('../src/utils/getprefix')
+const blacklist = require('./schemas/Blacklist-schema');
 
 const Discord = require("discord.js");
 
-const client = new Discord.Client();
 
 if (Config.config.bot.token === '') {
  return console.log('[SkyBlox Systems] - No Bot token is provided. mainmodule.config.bot.token === "tokenhere"')
@@ -15,6 +22,10 @@ if (Config.config.bot.token === '') {
 
 if (Config.config.bot.prefix === '') {
   return console.log('[SkyBlox Systems] - No prefix is provided.  mainmodule.config.bot.prefix === "tokenhere"')
+}
+
+if (Config.config.bot.dashboardurl === 'https://localhost') {
+  return console.log('[SkyBlox Systems] - You are using the default dashboard url what is provided in the default bot config. We recommend for you to change it.');
 }
 
 (async () => {
@@ -30,7 +41,8 @@ if (Config.config.bot.prefix === '') {
 })();
 
 
-client.on("ready",  guild => {
+client.on('ready', () => {
+  let commands = client.application.commands;
 })
 
 
@@ -49,16 +61,7 @@ client.on("ready",  guild => {
 
 
 client.on('guildCreate', guild => {
-  let defaultChannel = "";
-  guild.channels.cache.forEach((channel) => {
-    if (channel.type == "text" && defaultChannel == "") {
-      if (channel.permissionsFor(guild.me).has("SEND_MESSAGES")) {
-        defaultChannel = channel;
-
-      }
-    }
-
-  })
+  const defaultChannel = guild.channels.cache.find(channel => channel.type === 'GUILD_TEXT' && channel.permissionsFor(guild.me).has(Permissions.FLAGS.SEND_MESSAGES))
 
 
   const welcome = new MessageEmbed()
@@ -68,17 +71,70 @@ client.on('guildCreate', guild => {
     .setColor('#f6f7f8')
 
 
-  defaultChannel.send(welcome)
+  defaultChannel.send({ embeds: [welcome] })
+  
 })
 
 client.on('guildDelete', guild => {
   MainDatabase.findOneAndDelete({ ServerID: guild.id }, async (err01, data01) => {
     if (err01) throw err01;
     if (data01) {
-      data01.save()
       console.log(`Removed ${guild.id} from the database.`)
     }
   })
 })
 
 
+
+client.on('interactionCreate', interaction => {
+  if(!interaction.isCommand) return;
+  let name = interaction.commandName;
+  let options = interaction.options;
+
+  let commandMethod = commands.get(name);
+  if (commandMethod) {
+
+    blacklist.findOne({ UserID: interaction.user.id }, async (err, data) => {
+      const check =  await db.findOne({ Guild: interaction.guildId })
+      const versionCheck =  await MainDatabase.findOne({ ServerID: interaction.guildId})
+      if (err) throw err;
+      if (!data) {
+        if (commandMethod.name === 'setup') {
+          commandMethod(client, interaction)
+        } else {
+          if (commandMethod.name === 'upgrade') {
+            commandMethod(client, interaction)
+          } else {
+            if (versionCheck.BotVersion !== config.BotVersions) {
+              const UpdateBot = new MessageEmbed()
+                .setTitle('Update bot')
+                .setDescription(`You are currently running v${versionCheck.BotVersion} of the bot. Please update it to v${config.BotVersions}. Run the command /upgrade to update the bot.`)
+                await interaction.reply({ embeds: [UpdateBot]})
+            } else {
+              if (check) {
+                const DisabledCommand = new MessageEmbed()
+                    .setTitle('Disabled')
+                    .setDescription(`The following command **/${commandMethod.name}** has been disabled in the server by an administrator`)
+                    .setColor('#f6f7f8')
+                  if (check.Cmds.includes(interaction.name)) return interaction.reply({ embeds: [DisabledCommand]})
+                  commandMethod(client, interaction)
+              } else {
+                commandMethod(client, interaction)
+              }
+            }
+          }
+        }
+      } else {
+        const BlacklistedFromBot = new MessageEmbed()
+          .setTitle('Blacklisted!')
+          .setDescription('You have been blacklisted from using Ticket Bot!')
+          .addField('Reason', `${data.Reason}`)
+          .addField('Time', `${data.Time} UTC`)
+          .addField('Admin', `${data.Admin}`)
+          interaction.reply({ embeds: [BlacklistedFromBot]})
+      }
+    })
+  }
+
+  if(!commandMethod) return;
+})

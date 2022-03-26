@@ -1,6 +1,6 @@
 # SkyBlox Systems Ticket Bot
 
-SkyBlox Systems is the best Open Source Ticket bot out there. Not far behind with the current up to date private one.
+SkyBlox Systems is the best Open Source Ticket bot out there. Not far behind with the current up to date private one. 
 
 ## Installation
 
@@ -14,7 +14,7 @@ npm i @skybloxsystems/ticket-bot
 If you want to update the bot, please use the current version
 
 ```bash
-npm i @skybloxsystems/ticket-bot@1.0.2
+npm i @skybloxsystems/ticket-bot@1.0.4
 ```
 
 ## Usage
@@ -26,9 +26,11 @@ const Bot = require('@skybloxsystems/ticket-bot')
 Bot.config.bot.prefix = ""
 Bot.config.bot.token = ""
 Bot.config.bot.dashboardurl = ""
+Bot.config.Bot.botClientId = ""
+Bot.config.bot.ownerid = ""
 
 # Start the bot!
-Bot.Start()
+Bot.Start() or Bot.Dev()
 ```
 
 ## Contributingad
