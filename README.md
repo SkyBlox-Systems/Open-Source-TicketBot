@@ -14,7 +14,24 @@ npm i @skybloxsystems/ticket-bot
 If you want to update the bot, please use the current version
 
 ```bash
-npm i @skybloxsystems/ticket-bot@1.0.4
+npm i @skybloxsystems/ticket-bot@1.0.7
+```
+
+## Checking for Errors
+If you are having issues, you can do the following to check for the issue
+
+```javascript
+const Bot = require('@skybloxsystems/ticket-bot')
+
+# Setup config settings
+Bot.config.bot.prefix = ""
+Bot.config.bot.token = ""
+Bot.config.bot.dashboardurl = ""
+Bot.config.Bot.botClientId = ""
+Bot.config.bot.ownerid = ""
+
+# Check for errors
+Bot.Debug()
 ```
 
 ## Usage

@@ -1,7 +1,8 @@
 {
-  "name": "Ticket",
+  "name": "ticket-bot13",
   "language": "javascript",
   "manager": "npm",
-  "token": "00000",
-  "prefix": "!"
+  "token": "000000000000",
+  "prefix": "!",
+  "BotVersions": "3.3"
 }

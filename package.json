@@ -1,6 +1,6 @@
 {
   "name": "@skybloxsystems/ticket-bot",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "description": "Main",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "url": "git+https://github.com/SkyBlox-Systems/Open-Source-TicketBot.git"
   },
   "keywords": [
-    "SkyBlox Systmes",
+    "SkyBlox Systems",
     "Discord",
     "Ticket"
   ],
